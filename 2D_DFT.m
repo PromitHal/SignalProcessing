@@ -1,46 +1,39 @@
-N=8;
-inp_matrix=zeros(N,N);
-for i=1:N
-    for j=1:N
-       inp_matrix(i,j)=i+j;
-    end
-end
-inp_matrix=[1,0,0,0,0,0,0,0;0,0,1,0,-1,0,0,0;0,0,-1,-1,1,0,0,0;0,0,1,0,-1,1,0,0;0,-1,1,-1,1,0,0,1;0,0,0,0,-1,0,0,0;0,0,-1,0,1,0,0,0;1,0,0,0,0,0,0,1];
-new_matrix=zeros(N,N);
-y=[0,1,1,2,3,5,8,13,21,34,55];
+%Declaring the 2-D matrix whose DFT has to be computed
+inp_matrix=[1,0,0,0,0,0,0,0;
+            0,0,1,0,-1,0,0,0;
+            0,0,-1,-1,1,0,0,0;
+            0,0,1,0,-1,1,0,0;
+            0,-1,1,-1,1,0,0,1;
+            0,0,0,0,-1,0,0,0;
+            0,0,-1,0,1,0,0,0;
+            1,0,0,0,0,0,0,1];
+        
+N=length(inp_matrix);       
+%Declaring a zero matrix         
+result_2D_DFT=zeros(N,N);
 
-%FFT OF 2d matrix:
-%Column nwise
+%Calculating DFT of the 2D Matrix
+
+%Calculating column-wise DFT
 for c=1:N
-    temp=inp_matrix(c,:);
-    DFT=FT(temp);
+    temp=inp_matrix(c,:);%Extracting a row
+    DFT=FT(temp);%DFT of the respective row
     for d=1:N
-        new_matrix(c,d)=DFT(d);
+        result_2D_DFT(c,d)=DFT(d);%Storing the DFT into a matrix
     end
 end
-%Row wise
+
+%Calculating column-wise DFT
 for c=1:N
-    temp=new_matrix(:,c);
-    temp=transpose(temp);
-    DFT=FT(temp);
+    temp=result_2D_DFT(:,c);%Extracting a column
+    temp=transpose(temp);%Takng transpose of the column matrix
+    DFT=FT(temp);%DFT of the respective column
     for d=1:N
-        new_matrix(d,c)=DFT(d);
+        result_2D_DFT(d,c)=DFT(d);%Storing the DFT into a matrix7
     end
 end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+%Function for calculating  one-dimensional DFT of a sequence
 function DFT =FT(x)
     N=length(x);%Length of the sequence
     %DFT Matrix
@@ -53,8 +46,7 @@ function DFT =FT(x)
        end
    
     end
-       %Calculating DFT sequence
-
+     %Calculating DFT sequence
      x_t=transpose(x);%Taking transpose of input sequence matrix
 
      DFT=DFT_matrix*x_t;%DFT of the input sequence
